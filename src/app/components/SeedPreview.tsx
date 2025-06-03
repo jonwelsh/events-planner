@@ -1,4 +1,4 @@
-export function SeedPreview({ events, users }: { events: any[]; users: any[] }) {
+export function SeedPreview({ events, users, attending }: { events: any[]; users: any[]; attending: any[] }) {
   return (
     <div className='space-y-8'>
       <table className='min-w-full border'>
@@ -52,6 +52,25 @@ export function SeedPreview({ events, users }: { events: any[]; users: any[] }) 
                   : '[No speaker]'}
               </td>
               <td className='border px-2'>{new Date(event.starts_at).toLocaleString()}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <table className='min-w-full border'>
+        <thead>
+          <tr className='bg-gray-100'>
+            <th className='border px-2'>Title</th>
+            <th className='border px-2'>Name</th>
+            <th className='border px-2'>Attending</th>
+          </tr>
+        </thead>
+        <tbody>
+          {attending?.map((attendee: any) => (
+            <tr key={attendee.id}>
+              <td className='border px-2'>{attendee.event.title}</td>
+              <td className='border px-2'>{attendee.user.first_name + ' ' + attendee.user.last_name}</td>
+              <td className='border px-2 capitalize'>{attendee.status}</td>
             </tr>
           ))}
         </tbody>
