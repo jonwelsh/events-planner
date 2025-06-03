@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export function SeedPreview({ events, users, attending }: { events: any[]; users: any[]; attending: any[] }) {
   return (
     <div className='space-y-8'>
@@ -51,7 +53,7 @@ export function SeedPreview({ events, users, attending }: { events: any[]; users
                     }`
                   : '[No speaker]'}
               </td>
-              <td className='border px-2'>{new Date(event.starts_at).toLocaleString()}</td>
+              <td className='border px-2'>{format(new Date(event.starts_at), 'dd MMMM yyyy HH:mm')}</td>
             </tr>
           ))}
         </tbody>
@@ -67,7 +69,7 @@ export function SeedPreview({ events, users, attending }: { events: any[]; users
         </thead>
         <tbody>
           {attending?.map((attendee: any) => (
-            <tr key={attendee.id}>
+            <tr key={attendee.user_id}>
               <td className='border px-2'>{attendee.event.title}</td>
               <td className='border px-2'>{attendee.user.first_name + ' ' + attendee.user.last_name}</td>
               <td className='border px-2 capitalize'>{attendee.status}</td>

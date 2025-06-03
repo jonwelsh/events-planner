@@ -1,34 +1,36 @@
 // app/routes/__root.tsx
 import type { ReactNode } from 'react'
 import { Outlet, createRootRouteWithContext, HeadContent, Scripts } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
+// import { createServerFn } from '@tanstack/react-start'
 
 import { QueryClient } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 
-import { getSupabaseServerClient } from '~/utils/supabase'
-import '../styles/app.css'
-import { DefaultCatchBoundary } from '~/components/DefaultCatchBooundary'
+// import { getSupabaseServerClient } from '~/utils/supabase'
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 
-const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
-  const supabase = await getSupabaseServerClient()
-  const { data, error: _error } = await supabase.auth.getUser()
+import '~/styles/app.css'
 
-  const res = await fetch(import.meta.env.VITE_SUPABASE_URL + '/rest/v1/', {
-    headers: { apikey: import.meta.env.VITE_SUPABASE_ANON_KEY! }
-  })
-  console.log('Supabase status:', res.status)
+// const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
+//   const supabase = await getSupabaseServerClient()
+//   const { data, error: _error } = await supabase.auth.getUser()
 
-  if (!data.user?.email) {
-    return null
-  }
+//   const res = await fetch(import.meta.env.VITE_SUPABASE_URL + '/rest/v1/', {
+//     headers: { apikey: import.meta.env.VITE_SUPABASE_ANON_KEY! }
+//   })
+//   console.log('Supabase status:', res.status)
 
-  return {
-    email: data.user.email
-  }
-})
+//   if (!data.user?.email) {
+//     return null
+//   }
+
+//   return {
+//     email: data.user.email
+//   }
+// })
+
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient
 }>()({
@@ -44,7 +46,8 @@ export const Route = createRootRouteWithContext<{
       {
         title: 'TanStack Start Starter'
       }
-    ]
+    ],
+    links: []
   }),
   errorComponent: (props) => {
     return (
