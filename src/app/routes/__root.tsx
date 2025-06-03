@@ -1,10 +1,16 @@
 // app/routes/__root.tsx
 import type { ReactNode } from 'react'
-import { Outlet, createRootRoute, HeadContent, Scripts } from '@tanstack/react-router'
-import appCss from '../styles/app.css?url'
+import { Outlet, createRootRouteWithContext, HeadContent, Scripts } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from '~/utils/supabase'
+
+import { QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+
+import { getSupabaseServerClient } from '~/utils/supabase'
+import '../styles/app.css'
+import { DefaultCatchBoundary } from '~/components/DefaultCatchBooundary'
+import { NotFound } from '~/components/NotFound'
 
 const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
   const supabase = await getSupabaseServerClient()
@@ -23,10 +29,11 @@ const fetchUser = createServerFn({ method: 'GET' }).handler(async () => {
     email: data.user.email
   }
 })
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   head: () => ({
     meta: [
-      { rel: 'stylesheet', href: appCss },
       {
         charSet: 'utf-8'
       },
@@ -39,13 +46,14 @@ export const Route = createRootRoute({
       }
     ]
   }),
-  beforeLoad: async () => {
-    const user = await fetchUser()
-
-    return {
-      user
-    }
+  errorComponent: (props) => {
+    return (
+      <RootDocument>
+        <DefaultCatchBoundary {...props} />
+      </RootDocument>
+    )
   },
+  notFoundComponent: () => <NotFound />,
   component: RootComponent
 })
 
@@ -65,7 +73,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       </head>
       <body>
         {children}
-        <TanStackRouterDevtools position='bottom-right' />
+        <ReactQueryDevtools initialIsOpen={false} />
+        <TanStackRouterDevtools position='bottom-left' />
         <Scripts />
       </body>
     </html>

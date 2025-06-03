@@ -4,7 +4,7 @@ import tsConfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   tsr: {
-    appDirectory: 'app'
+    appDirectory: 'src/app'
   },
   vite: {
     plugins: [

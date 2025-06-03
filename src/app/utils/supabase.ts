@@ -1,5 +1,5 @@
 import { parseCookies, setCookie } from '@tanstack/react-start/server'
-import { createServerClient } from '@supabase/ssr'
+import { createBrowserClient, createServerClient } from '@supabase/ssr'
 
 export function getSupabaseServerClient() {
   return createServerClient(import.meta.env.VITE_SUPABASE_URL!, import.meta.env.VITE_SUPABASE_ANON_KEY!, {
@@ -19,3 +19,8 @@ export function getSupabaseServerClient() {
     }
   })
 }
+
+export const supabase = createBrowserClient(
+  import.meta.env.VITE_SUPABASE_URL!,
+  import.meta.env.VITE_SUPABASE_ANON_KEY!
+)
