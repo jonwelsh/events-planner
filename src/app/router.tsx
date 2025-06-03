@@ -12,11 +12,15 @@ export function createRouter() {
   // })
 
   // return router
+
+  // Create a new QueryClient instance
   const queryClient = new QueryClient()
 
+  // Create a TanStack Router with the QueryClient
   return routerWithQueryClient(
     createTanStackRouter({
       routeTree,
+      scrollRestoration: true,
       context: { queryClient },
       defaultPreload: 'intent',
       defaultErrorComponent: DefaultCatchBoundary,
