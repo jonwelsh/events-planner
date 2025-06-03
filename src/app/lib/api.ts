@@ -19,3 +19,13 @@ export async function getUsers() {
   if (error) throw error
   return data
 }
+
+export async function getAttending() {
+  const { data, error } = await supabase.from('event_attendance').select(`
+    event_id, status,
+    user:event_attendance_user_id_fkey(first_name, last_name),
+    event:event_attendance_event_id_fkey(title)
+  `)
+  if (error) throw error
+  return data
+}
